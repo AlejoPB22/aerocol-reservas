@@ -4,6 +4,7 @@ import { CIUDADES, VUELOS } from './data/vuelos.js'
 import Header from './components/Header.jsx'
 import SelectorRuta from './components/SelectorRuta.jsx'
 import ListaVuelos from './components/ListaVuelos.jsx'
+import FormularioReserva from './components/FormularioReserva.jsx'
 import Footer from './components/Footer.jsx'
 
 function nombreCiudad(codigo) {
@@ -13,6 +14,7 @@ function nombreCiudad(codigo) {
 function App() {
   const [origen, setOrigen] = useState('')
   const [destino, setDestino] = useState('')
+  const [vueloSeleccionado, setVueloSeleccionado] = useState(null)
 
   const ciudadesDestino = CIUDADES.filter((c) => c.codigo !== origen)
   const vuelosEncontrados =
@@ -23,11 +25,18 @@ function App() {
   const manejarOrigen = (codigo) => {
     setOrigen(codigo)
     if (codigo === destino) setDestino('')
+    setVueloSeleccionado(null)
+  }
+
+  const manejarDestino = (codigo) => {
+    setDestino(codigo)
+    setVueloSeleccionado(null)
   }
 
   const intercambiar = () => {
     setOrigen(destino)
     setDestino(origen)
+    setVueloSeleccionado(null)
   }
 
   return (
@@ -37,21 +46,18 @@ function App() {
       <section className="selector">
         <h2>✈️ Busca tu vuelo</h2>
 
-
-
         <SelectorRuta
           origen={origen}
           destino={destino}
           ciudades={CIUDADES}
           ciudadesDestino={ciudadesDestino}
           onOrigen={manejarOrigen}
-          onDestino={setDestino}
+          onDestino={manejarDestino}
         />
 
         <button type="button" onClick={intercambiar} disabled={!origen || !destino}>
           🔄 Intercambiar
         </button>
-
       </section>
 
       {!origen || !destino ? (
@@ -59,11 +65,22 @@ function App() {
       ) : vuelosEncontrados.length === 0 ? (
         <p className="mensaje">No hay vuelos para esa ruta 🙃</p>
       ) : (
-        <ListaVuelos
-          vuelos={vuelosEncontrados}
-          nombreOrigen={nombreCiudad(origen)}
-          nombreDestino={nombreCiudad(destino)}
-        />
+        <>
+          <ListaVuelos
+            vuelos={vuelosEncontrados}
+            nombreOrigen={nombreCiudad(origen)}
+            nombreDestino={nombreCiudad(destino)}
+            vueloSeleccionado={vueloSeleccionado}
+            onSeleccionarVuelo={setVueloSeleccionado}
+          />
+
+          {vueloSeleccionado && (
+            <FormularioReserva
+              vuelo={vueloSeleccionado}
+              onCancelar={() => setVueloSeleccionado(null)}
+            />
+          )}
+        </>
       )}
 
       <Footer anio={2026} />
