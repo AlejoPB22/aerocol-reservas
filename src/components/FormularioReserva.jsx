@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
 const FACTORES_CLASE = {
-  Economica: 1.0,
-  Ejecutiva: 1.6,
-  Primera: 2.4,
+  economica: 1.0,
+  ejecutiva: 1.6,
+  primera: 2.4,
 }
 
 function formatoPrecio(precio) {
@@ -13,22 +13,21 @@ function formatoPrecio(precio) {
 function FormularioReserva({ vuelo, onConfirmar, onCancelar }) {
   const [nombre, setNombre] = useState('')
   const [pasajeros, setPasajeros] = useState(1)
-  const [clase, setClase] = useState('Economica')
+  const [clase, setClase] = useState('economica')
 
-  // Cálculo derivado dinámicamente sin guardarlo en el estado
-  const cantidadPasajeros = Math.max(1, Number(pasajeros) || 1)
-  const factor = FACTORES_CLASE[clase] ?? 1.0
-  const total = Math.round(vuelo.precio * cantidadPasajeros * factor)
+  // Total derivado dinámicamente: NO es estado
+  const factorClase = FACTORES_CLASE[clase] ?? 1.0
+  const total = Math.round(vuelo.precio * pasajeros * factorClase)
 
   const manejarEnvio = (e) => {
     e.preventDefault()
-    if (!nombre.trim()) return
+    if (nombre.trim() === '') return
 
     if (onConfirmar) {
       onConfirmar({
         nombre: nombre.trim(),
         vueloId: vuelo.id,
-        pasajeros: cantidadPasajeros,
+        pasajeros,
         clase,
         total,
       })
@@ -56,47 +55,90 @@ function FormularioReserva({ vuelo, onConfirmar, onCancelar }) {
       </div>
 
       <form onSubmit={manejarEnvio}>
+        {/* 1. Input controlado con value + onChange */}
         <label className="campo">
           Nombre completo
           <input
             type="text"
-            placeholder="Ej. Alejandro Paternina"
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
-            required
+            placeholder="Ej. Ana García"
           />
         </label>
 
-        <div className="fila-campos">
-          <label className="campo">
-            Pasajeros
-            <input
-              type="number"
-              min="1"
-              max="10"
-              value={pasajeros}
-              onChange={(e) => setPasajeros(Number(e.target.value))}
-              required
-            />
-          </label>
-
-          <label className="campo">
-            Clase
-            <select value={clase} onChange={(e) => setClase(e.target.value)}>
-              <option value="Economica">Económica (x1.0)</option>
-              <option value="Ejecutiva">Ejecutiva (x1.6)</option>
-              <option value="Primera">Primera Clase (x2.4)</option>
-            </select>
-          </label>
+        {/* 4. Contador de pasajeros con botones - / + y disabled */}
+        <div className="campo">
+          <span>Pasajeros</span>
+          <div className="contador-pasajeros">
+            <button
+              type="button"
+              onClick={() => setPasajeros(pasajeros - 1)}
+              disabled={pasajeros <= 1}
+            >
+              −
+            </button>
+            <strong>{pasajeros}</strong>
+            <button
+              type="button"
+              onClick={() => setPasajeros(pasajeros + 1)}
+            >
+              +
+            </button>
+          </div>
         </div>
 
+        {/* 3. Radios controladas con checked */}
+        <div className="campo">
+          <span>Clase de vuelo</span>
+          <div className="radios-clase">
+            <label className="radio-opcion">
+              <input
+                type="radio"
+                name="clase"
+                value="economica"
+                checked={clase === 'economica'}
+                onChange={() => setClase('economica')}
+              />
+              Económica (x1.0)
+            </label>
+
+            <label className="radio-opcion">
+              <input
+                type="radio"
+                name="clase"
+                value="ejecutiva"
+                checked={clase === 'ejecutiva'}
+                onChange={() => setClase('ejecutiva')}
+              />
+              Ejecutiva (x1.6)
+            </label>
+
+            <label className="radio-opcion">
+              <input
+                type="radio"
+                name="clase"
+                value="primera"
+                checked={clase === 'primera'}
+                onChange={() => setClase('primera')}
+              />
+              Primera (x2.0)
+            </label>
+          </div>
+        </div>
+
+        {/* 2. Total calculado / derivado */}
         <div className="total-contenedor">
           <span>Total a pagar:</span>
           <strong className="total-precio">{formatoPrecio(total)}</strong>
         </div>
 
-        <button type="submit" className="btn-confirmar" disabled={!nombre.trim()}>
-          Confirmar Reserva
+        {/* Botón de envío con disabled={nombre.trim() === ''} */}
+        <button
+          type="submit"
+          className="btn-confirmar"
+          disabled={nombre.trim() === ''}
+        >
+          Reservar
         </button>
       </form>
     </section>
@@ -104,4 +146,3 @@ function FormularioReserva({ vuelo, onConfirmar, onCancelar }) {
 }
 
 export default FormularioReserva
-
