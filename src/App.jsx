@@ -5,7 +5,27 @@ import Header from './components/Header.jsx'
 import SelectorRuta from './components/SelectorRuta.jsx'
 import ListaVuelos from './components/ListaVuelos.jsx'
 import FormularioReserva from './components/FormularioReserva.jsx'
+import MisReservas from './components/MisReservas.jsx'
 import Footer from './components/Footer.jsx'
+
+const STORAGE_KEY = 'aerocol-reservas'
+
+function cargarReservas() {
+  try {
+    const guardadas = localStorage.getItem(STORAGE_KEY)
+    return guardadas ? JSON.parse(guardadas) : []
+  } catch {
+    return []
+  }
+}
+
+function guardarReservas(lista) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(lista))
+  } catch {
+    // Evita fallos si localStorage está bloqueado o sin espacio
+  }
+}
 
 function nombreCiudad(codigo) {
   return CIUDADES.find((c) => c.codigo === codigo)?.nombre ?? codigo
@@ -15,6 +35,7 @@ function App() {
   const [origen, setOrigen] = useState('')
   const [destino, setDestino] = useState('')
   const [vueloSeleccionado, setVueloSeleccionado] = useState(null)
+  const [reservas, setReservas] = useState(cargarReservas)
 
   const ciudadesDestino = CIUDADES.filter((c) => c.codigo !== origen)
   const vuelosEncontrados =
@@ -37,6 +58,24 @@ function App() {
     setOrigen(destino)
     setDestino(origen)
     setVueloSeleccionado(null)
+  }
+
+  const agregarReserva = (datosReserva) => {
+    const nuevaReserva = {
+      id: crypto.randomUUID(),
+      ...datosReserva,
+      fecha: new Date().toLocaleDateString('es-CO'),
+    }
+    const nuevasReservas = [...reservas, nuevaReserva]
+    setReservas(nuevasReservas)
+    guardarReservas(nuevasReservas)
+    setVueloSeleccionado(null)
+  }
+
+  const eliminarReserva = (id) => {
+    const nuevasReservas = reservas.filter((r) => r.id !== id)
+    setReservas(nuevasReservas)
+    guardarReservas(nuevasReservas)
   }
 
   return (
@@ -77,11 +116,14 @@ function App() {
           {vueloSeleccionado && (
             <FormularioReserva
               vuelo={vueloSeleccionado}
+              onConfirmar={agregarReserva}
               onCancelar={() => setVueloSeleccionado(null)}
             />
           )}
         </>
       )}
+
+      <MisReservas reservas={reservas} onEliminarReserva={eliminarReserva} />
 
       <Footer anio={2026} />
     </main>
@@ -89,9 +131,3 @@ function App() {
 }
 
 export default App
-
-
-
-
-
-

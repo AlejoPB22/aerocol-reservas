@@ -51,9 +51,37 @@ Aplicación interactiva de búsqueda y reserva de vuelos desarrollada con **Reac
 
 ---
 
+## ✍️ Respuestas a las Preguntas Guía — F2 (Mis Reservas y `localStorage`)
+
+### 1. ¿Por qué no mutar el array directamente con `push()`? ¿Qué pasa si lo usas y por qué React no se entera que cambió el array?
+
+> **Respuesta:**  
+> React compara las referencias en memoria (`Object.is`) para decidir si un estado cambió y si debe volver a renderizar el componente.  
+> Cuando haces `reservas.push(nueva)`, modificas el mismo arreglo en memoria, pero **la referencia del array sigue siendo exactamente la misma**. Para React, nada cambió y la interfaz no se actualiza.  
+> Al crear un array nuevo con el operador spread (`[...reservas, nueva]`) o con `reservas.filter(...)`, entregas una **nueva referencia** y React dispara el re-render de inmediato.
+
+---
+
+### 2. ¿Qué le pasa a tus reservas si recargas la página sin `localStorage`? ¿Por qué hay que convertir el array a texto antes de guardarlo en `localStorage`?
+
+> **Respuesta:**  
+> - **Sin `localStorage`:** El estado de React (`useState`) vive únicamente en la memoria RAM temporal de la pestaña del navegador; al recargar (`F5`), la aplicación se reinicia desde cero y todas las reservas se pierden.
+> - **Conversión a texto (JSON):** `localStorage` es un almacenamiento clave-valor que **solo guarda cadenas de texto (`string`)**. Si intentaras guardar un arreglo de objetos directamente, JavaScript lo convertiría a `"[object Object]"` y perderías los datos. Por eso usamos `JSON.stringify(reservas)` al guardar y `JSON.parse(guardadas)` al leer.
+
+---
+
+### 3. ¿Dónde pones la lógica de guardar y en qué momento exacto deberías escribir en `localStorage`: al reservar, al eliminar, o en cada render?
+
+> **Respuesta:**  
+> La lógica de lectura y guardado vive en **`App.jsx`** (junto al estado `reservas`, usando `useState(cargarReservas)` para leer una sola vez al montar).  
+> Se debe escribir en `localStorage` **únicamente cuando las reservas cambian: al agregar una reserva y al eliminar una reserva** (y **no** en cada render), porque escribir en el almacenamiento del navegador en cada render es innecesario, ineficiente y podría ejecutarse incluso cuando cambian otros estados no relacionados (como el origen, el destino o el nombre que escribe el usuario).
+
+---
+
 ## 🛠️ Tecnologías y Conceptos Aplicados
 - **React 19** + **Vite**
 - **Lifting State Up**: Elevación de estados compartidos a `App.jsx`.
 - **Formularios controlados**: `value` + `onChange` para inputs de texto, y `checked` para botones de tipo radio.
 - **Valores derivados**: Cálculo reactivo en el cuerpo del componente sin estados redundantes.
 - **Renderizado condicional**: Manejo dinámico de vistas según el estado de la aplicación.
+- **Inmutabilidad y Persistencia**: Manejo inmutable de listas (`...`, `.filter()`) y persistencia con `localStorage` (`JSON.stringify` / `JSON.parse`) e inicialización perezosa (`useState(cargarReservas)`).

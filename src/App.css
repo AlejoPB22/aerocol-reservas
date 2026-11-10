@@ -332,6 +332,116 @@
   border-radius: 8px;
 }
 
+/* Sección Mis Reservas */
+.seccion-reservas {
+  max-width: 520px;
+  margin: 32px auto 24px;
+  padding: 20px 24px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
+}
+
+.seccion-reservas h2 {
+  margin: 0 0 16px;
+  font-size: 1.25rem;
+  color: #0f172a;
+}
+
+.reservas-vacias {
+  margin: 0;
+  text-align: center;
+  padding: 20px 12px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  color: #475569;
+  font-weight: 500;
+}
+
+.lista-reservas {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tarjeta-reserva {
+  padding: 16px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reserva-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 8px;
+}
+
+.reserva-ruta {
+  font-weight: 700;
+  color: #0369a1;
+  font-size: 1.05rem;
+}
+
+.reserva-fecha {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.reserva-detalles p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+.reserva-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px !important;
+  padding-top: 8px;
+  border-top: 1px dashed #cbd5e1;
+  font-size: 1rem;
+}
+
+.reserva-total strong {
+  color: #15803d;
+  font-size: 1.15rem;
+}
+
+.reserva-acciones {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+
+.btn-eliminar-reserva {
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.btn-eliminar-reserva:hover {
+  background: #fee2e2;
+  border-color: #f87171;
+}
+
 .footer {
   text-align: center;
   color: #64748b;

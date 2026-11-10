@@ -11,15 +11,12 @@ function formatoPrecio(precio) {
 function MisReservas({ reservas, onEliminarReserva }) {
   return (
     <section className="seccion-reservas">
-      <h2>🎫 Mis Reservas ({reservas.length})</h2>
+      <h2>🎫 Mis reservas {reservas.length > 0 ? `(${reservas.length})` : ''}</h2>
 
       {reservas.length === 0 ? (
-        <div className="reservas-vacias">
-          <p>No tienes reservas activas todavía ✈️</p>
-          <small>Elige una ruta y completa el formulario para reservar tu vuelo.</small>
-        </div>
+        <p className="reservas-vacias">Aún no tienes reservas 👀</p>
       ) : (
-        <div className="lista-reservas">
+        <ul className="lista-reservas">
           {reservas.map((reserva) => {
             const vuelo = VUELOS.find((v) => v.id === reserva.vueloId)
             const origen = vuelo ? nombreCiudad(vuelo.origen) : '—'
@@ -28,7 +25,7 @@ function MisReservas({ reservas, onEliminarReserva }) {
               reserva.clase.charAt(0).toUpperCase() + reserva.clase.slice(1)
 
             return (
-              <article key={reserva.id} className="tarjeta-reserva">
+              <li key={reserva.id} className="tarjeta-reserva">
                 <div className="reserva-header">
                   <span className="reserva-ruta">
                     🛫 {origen} → {destino}
@@ -40,11 +37,10 @@ function MisReservas({ reservas, onEliminarReserva }) {
                   <p>
                     <strong>👤 Pasajero:</strong> {reserva.nombre}
                   </p>
-                  {vuelo && (
-                    <p>
-                      <strong>🛩️ Vuelo:</strong> {vuelo.avion} ({vuelo.hora})
-                    </p>
-                  )}
+                  <p>
+                    <strong>🛩️ Vuelo:</strong> {reserva.vueloId}
+                    {vuelo ? ` — ${vuelo.avion} (${vuelo.hora})` : ''}
+                  </p>
                   <p>
                     <strong>👥 Pasajeros:</strong> {reserva.pasajeros} ·{' '}
                     <strong>Clase:</strong> {claseFormateada}
@@ -60,18 +56,18 @@ function MisReservas({ reservas, onEliminarReserva }) {
                     type="button"
                     className="btn-eliminar-reserva"
                     onClick={() => onEliminarReserva(reserva.id)}
+                    aria-label={`Eliminar reserva de ${reserva.nombre}`}
                   >
-                    🗑️ Cancelar Reserva
+                    🗑️ Eliminar
                   </button>
                 </div>
-              </article>
+              </li>
             )
           })}
-        </div>
+        </ul>
       )}
     </section>
   )
 }
 
 export default MisReservas
-
