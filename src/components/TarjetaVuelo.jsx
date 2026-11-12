@@ -5,8 +5,8 @@ function formatoPrecio(precio) {
 function TarjetaVuelo({ vuelo, seleccionada, onSeleccionar }) {
   return (
     <li
-      className={`tarjeta ${seleccionada ? 'tarjeta-seleccionada' : ''}`}
-      onClick={() => onSeleccionar && onSeleccionar(vuelo)}
+      className={seleccionada ? 'tarjeta seleccionada' : 'tarjeta'}
+      onClick={() => onSeleccionar?.(vuelo)}
       style={{ cursor: onSeleccionar ? 'pointer' : 'default' }}
     >
       <strong>🛩️ {vuelo.avion}</strong>

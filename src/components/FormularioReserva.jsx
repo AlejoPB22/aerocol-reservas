@@ -47,7 +47,7 @@ function FormularioReserva({ vuelo, onConfirmar, onCancelar }) {
 
       <div className="resumen-vuelo">
         <p>
-          <strong>Vuelo:</strong> {vuelo.avion} ({vuelo.hora})
+          <strong>Detalle del vuelo ({vuelo.id}):</strong> 🛩️ {vuelo.avion} · 🕐 {vuelo.hora}
         </p>
         <p>
           <strong>Precio base por persona:</strong> {formatoPrecio(vuelo.precio)}

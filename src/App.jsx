@@ -34,6 +34,7 @@ function nombreCiudad(codigo) {
 function App() {
   const [origen, setOrigen] = useState('')
   const [destino, setDestino] = useState('')
+  const [orden, setOrden] = useState('precio-asc')
   const [vueloSeleccionado, setVueloSeleccionado] = useState(null)
   const [reservas, setReservas] = useState(cargarReservas)
 
@@ -42,6 +43,14 @@ function App() {
     origen !== '' && destino !== ''
       ? VUELOS.filter((v) => v.origen === origen && v.destino === destino)
       : []
+
+  // Lista ordenada derivada sobre una copia para no mutar vuelosEncontrados ni VUELOS
+  const vuelosOrdenados = [...vuelosEncontrados].sort((a, b) => {
+    if (orden === 'precio-desc') return b.precio - a.precio
+    if (orden === 'hora') return a.hora.localeCompare(b.hora)
+    if (orden === 'avion') return a.avion.localeCompare(b.avion)
+    return a.precio - b.precio
+  })
 
   const manejarOrigen = (codigo) => {
     setOrigen(codigo)
@@ -106,9 +115,11 @@ function App() {
       ) : (
         <>
           <ListaVuelos
-            vuelos={vuelosEncontrados}
+            vuelos={vuelosOrdenados}
             nombreOrigen={nombreCiudad(origen)}
             nombreDestino={nombreCiudad(destino)}
+            orden={orden}
+            onOrdenar={setOrden}
             vueloSeleccionado={vueloSeleccionado}
             onSeleccionarVuelo={setVueloSeleccionado}
           />
