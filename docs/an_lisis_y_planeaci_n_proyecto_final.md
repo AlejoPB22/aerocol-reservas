@@ -33,16 +33,24 @@ A continuación, se presenta la estructura arquitectónica proyectada para la ap
 
 ```text
                                         App
-              (Estados: origen, destino, vueloSeleccionado, reservas)
+           (Estados: origen, destino, orden, vueloSeleccionado, reservas)
                                          │
        ┌─────────────────┬───────────────┼───────────────┬─────────────────┐
        │                 │               │               │                 │
     <Header>      <SelectorRuta>   <ListaVuelos>   <MisReservas>        <Footer>
-                         │               │               │                 
-                  <SelectCiudad>   <TarjetaVuelo>    (Lista y btn        
-                   (reutilizado)         │            eliminar)           
-                                         │                                 
-                                <FormularioReserva>                        
-                                (Estados locales:                          
-                             nombre, pasajeros, clase)                     
+  (aerolinea,    (origen, destino, (vuelos,        (reservas,          (anio)
+   eslogan)       ciudades,         nombreOrigen,   onEliminarReserva)
+                  ciudadesDestino,  nombreDestino,
+                  onOrigen,         orden, onOrdenar,
+                  onDestino)        vueloSeleccionado,
+                         │          onSeleccionarVuelo)
+                  <SelectCiudad>         │
+                  (label, value,   <TarjetaVuelo>
+                   ciudades,       (vuelo, seleccionada,
+                   onCambio)        onSeleccionar)
+                                         │
+                                (render condicional en App)
+                                <FormularioReserva>
+                                (Props: vuelo, onConfirmar, onCancelar)
+                                (Estados locales: nombre, pasajeros, clase)
 ```

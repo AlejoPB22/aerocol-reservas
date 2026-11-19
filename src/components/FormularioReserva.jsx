@@ -121,7 +121,7 @@ function FormularioReserva({ vuelo, onConfirmar, onCancelar }) {
                 checked={clase === 'primera'}
                 onChange={() => setClase('primera')}
               />
-              Primera (x2.0)
+              Primera (x2.4)
             </label>
           </div>
         </div>
