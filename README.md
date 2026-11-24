@@ -1,10 +1,10 @@
-# ✈️ AeroCol — Sistema de Reservas de Vuelos
+#  AeroCol — Sistema de Reservas de Vuelos
 
-## 🚀 Proyecto Final
+##  Proyecto Final
 
 **AeroCol** es una aplicación web interactiva desarrollada con **React** y **Vite** para buscar vuelos nacionales por ruta, ordenar el catálogo dinámico según distintos criterios (precio, hora o avión), calcular cotizaciones en tiempo real según número de pasajeros y clase, y gestionar reservas persistentes en el navegador mediante `localStorage`.
 
-### 🌳 Árbol de Componentes
+###  Árbol de Componentes
 
 ```text
                                      App
@@ -21,7 +21,7 @@
                              (Estados locales: nombre, pasajeros, clase)
 ```
 
-### ▶️ Cómo correr la app en local
+###  Cómo correr la app en local
 
 ```bash
 # 1. Instalar dependencias (solo la primera vez)
@@ -40,7 +40,7 @@ npm run build
 
 ---
 
-## 💡 Decisión de Diseño Más Importante
+##  Decisión de Diseño Más Importante
 
 La decisión arquitectónica más importante fue **centralizar en `App` únicamente los estados compartidos (`origen`, `destino`, `orden`, `vueloSeleccionado`, `reservas`) y tratar el resto como valores derivados o estado local**.
 
@@ -49,7 +49,7 @@ La decisión arquitectónica más importante fue **centralizar en `App` únicame
 
 ---
 
-## ✍️ Respuestas a las Preguntas Guía — F1 (Formulario de Reserva)
+##  Respuestas a las Preguntas Guía — F1 (Formulario de Reserva)
 
 ### 1. ¿Dónde debe vivir el estado del formulario (`nombre`, `pasajeros`, `clase`): dentro del componente nuevo o en `App`? ¿Quién más necesita esos datos?
 
@@ -76,7 +76,7 @@ La decisión arquitectónica más importante fue **centralizar en `App` únicame
 
 ---
 
-## ✍️ Respuestas a las Preguntas Guía — F2 (Mis Reservas y `localStorage`)
+##  Respuestas a las Preguntas Guía — F2 (Mis Reservas y `localStorage`)
 
 ### 1. ¿Por qué no mutar el array directamente con `push()`? ¿Qué pasa si lo usas y por qué React no se entera que cambió el array?
 
@@ -97,7 +97,7 @@ La decisión arquitectónica más importante fue **centralizar en `App` únicame
 
 ---
 
-## ✍️ Respuestas a las Preguntas Guía — F3 (Catálogo Inteligente)
+##  Respuestas a las Preguntas Guía — F3 (Catálogo Inteligente)
 
 ### 1. ¿Por qué hay que ordenar una copia del array (`[...]`) y no el original? ¿Qué le pasaría a tu catálogo si ordenaras sin copiar?
 
@@ -117,7 +117,7 @@ La decisión arquitectónica más importante fue **centralizar en `App` únicame
 
 ---
 
-## 🗣️ Guía Rápida de Pre-Defensa (5 Preguntas Clave)
+##  Guía Rápida de Pre-Defensa (5 Preguntas Clave)
 
 1. **¿Dónde vive cada estado y por qué?**
    - `origen`, `destino`, `orden`, `vueloSeleccionado` y `reservas` viven en `App` porque son compartidos entre varios componentes hermanos (`SelectorRuta`, `ListaVuelos`, `FormularioReserva`, `MisReservas`).
@@ -133,7 +133,7 @@ La decisión arquitectónica más importante fue **centralizar en `App` únicame
 
 ---
 
-## 🛠️ Tecnologías y Conceptos Aplicados
+##  Tecnologías y Conceptos Aplicados
 - **React 19** + **Vite**
 - **Lifting State Up**: Elevación de estados compartidos a `App.jsx`.
 - **Formularios controlados**: `value` + `onChange` para inputs/selects y `checked` para radios.
